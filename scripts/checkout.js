@@ -4,77 +4,78 @@ import { formateCurrency } from "./utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import { deliveryOptions } from "../data/deliveryOption.js";
 
+function renderOrderSummary(){
 
-let cartSummaryHtml = '';
+  let cartSummaryHtml = '';
 
-cart.forEach((cartItem)=>{
+  cart.forEach((cartItem)=>{
 
-  const productId =  cartItem.productId;
+    const productId =  cartItem.productId;
 
-  let matchingProduct;
+    let matchingProduct;
 
-  products.forEach((product)=>{
-    if (product.id === productId){
-      matchingProduct = product;
-    }
-  });
+    products.forEach((product)=>{
+      if (product.id === productId){
+        matchingProduct = product;
+      }
+    });
 
-  const deliveryOptionId = cartItem.deliveryOptionId;
+    const deliveryOptionId = cartItem.deliveryOptionId;
 
-  let deliveryOption;
+    let deliveryOption;
 
-  deliveryOptions.forEach((option)=>{
-    if (option.id === deliveryOptionId){
-      deliveryOption = option;
-    }
-  });
+    deliveryOptions.forEach((option)=>{
+      if (option.id === deliveryOptionId){
+        deliveryOption = option;
+      }
+    });
 
-  const today = dayjs();
-  const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-  const dateString = deliveryDate.format('dddd, MMMM D');
+    const today = dayjs();
+    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+    const dateString = deliveryDate.format('dddd, MMMM D');
 
-  cartSummaryHtml +=
-        `
-            <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
-              <div class="delivery-date">
-                Delivery date: ${dateString}
-              </div>
-
-              <div class="cart-item-details-grid">
-                <img class="product-image"
-                  src="${matchingProduct.image}">
-
-                <div class="cart-item-details">
-                  <div class="product-name">
-                    ${matchingProduct.name}
-                  </div>
-                  <div class="product-price">
-                    $${formateCurrency(matchingProduct.priceCents)}
-                  </div>
-                  <div class="product-quantity">
-                    <span>
-                      Quantity: <span class="quantity-label">${cartItem.quantity}</span>
-                    </span>
-                    <span class="update-quantity-link link-primary">
-                      Update
-                    </span>
-                    <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
-                      Delete
-                    </span>
-                  </div>
+    cartSummaryHtml +=
+          `
+              <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
+                <div class="delivery-date">
+                  Delivery date: ${dateString}
                 </div>
 
-                <div class="delivery-options">
-                  <div class="delivery-options-title">
-                    Choose a delivery option:
+                <div class="cart-item-details-grid">
+                  <img class="product-image"
+                    src="${matchingProduct.image}">
+
+                  <div class="cart-item-details">
+                    <div class="product-name">
+                      ${matchingProduct.name}
+                    </div>
+                    <div class="product-price">
+                      $${formateCurrency(matchingProduct.priceCents)}
+                    </div>
+                    <div class="product-quantity">
+                      <span>
+                        Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+                      </span>
+                      <span class="update-quantity-link link-primary">
+                        Update
+                      </span>
+                      <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
+                        Delete
+                      </span>
+                    </div>
                   </div>
-                  ${deliveryOptionsHTML(matchingProduct, cartItem)} 
+
+                  <div class="delivery-options">
+                    <div class="delivery-options-title">
+                      Choose a delivery option:
+                    </div>
+                    ${deliveryOptionsHTML(matchingProduct, cartItem)} 
+                  </div>
                 </div>
               </div>
-            </div>
-        
-        `;
-});
+          
+          `;
+  });
 
 function deliveryOptionsHTML (matchingProduct, cartItem){
   let html = '';
@@ -127,7 +128,8 @@ document.querySelectorAll('.js-delete-link')
       element.addEventListener('click', ()=>{
         const {productId, deliveryOptionId} = element.dataset;
         updateDeliveryOption(productId, deliveryOptionId);
-      })
+        renderOrderSummary();
+      });
     });
 
 
@@ -138,3 +140,7 @@ document.querySelectorAll('.js-delete-link')
   });
   
   document.querySelector('.js-checkout-header').innerHTML = `${CheckoutCartQuantity} items`;
+
+}
+
+renderOrderSummary();
