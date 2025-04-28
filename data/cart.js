@@ -1,4 +1,4 @@
-export let cart;
+export let cart; //prosudural programing: a set of step-step instruction
 
 loadFromStorage();
 
