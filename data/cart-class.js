@@ -1,17 +1,17 @@
 // oops // class
 class Cart {
   cartItem ;
-  localStorageKey;
+  #localStorageKey;
 
   constructor(localStorageKey) { //we will put code inside and it will run automaticaly
     
-    this.localStorageKey = localStorageKey;    // setup code //constructor let us put inside the class
+    this.#localStorageKey = localStorageKey;    // setup code //constructor let us put inside the class
     
-    this.loadFromStorage();
+    this.#loadFromStorage();
 
   }
-  loadFromStorage(){
-    this.cartItem = JSON.parse(localStorage.getItem(this.localStorageKey)); //this means this object
+  #loadFromStorage(){
+    this.cartItem = JSON.parse(localStorage.getItem(this.#localStorageKey)); //this means this object
   
     if (!this.cartItem){
   
@@ -29,7 +29,7 @@ class Cart {
   }
 
   saveToStorage(){
-    localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItem));
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItem));
   }
 
   addToCart(productId){
