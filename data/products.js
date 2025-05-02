@@ -55,8 +55,25 @@ class Clothing extends Product {   // Using Inheritence
   }
 }
 
+/*
+const date = new Date();
+console.log(date);
+const time = date.toLocaleTimeString();
+console.log(time);
 
+console.log(this); // undefined but this = Window
 
+const object2 = {
+  a: 2,
+  b: this.a
+}; // output = undefinded 
+
+function logThis(){
+  console.log(this);
+}
+logThis();
+logThis.call('hello');
+*/
 
 export const products = [
   {
