@@ -77,7 +77,7 @@ export function updateDeliveryOption(productId, deliveryOptionId){
   matchingItem.deliveryOptionId = deliveryOptionId;
   saveToStorage();
 }
-
+/*
 export function loadCart(fun){ 
   const xhr = new XMLHttpRequest();
 
@@ -90,7 +90,7 @@ export function loadCart(fun){
   xhr.open('GET', 'https://supersimplebackend.dev/cart');
   xhr.send();
 }
-
+*/
 export function totalCartQuantity(){
   let CheckoutCartQuantity = 0;
 
@@ -100,5 +100,11 @@ export function totalCartQuantity(){
 
   return CheckoutCartQuantity || 0 ;
 }
-
-async
+//18 H
+export async function loadCartFetch(fun) {
+  const response = await fetch('https://supersimplebackend.dev/cart');
+  
+  const textvalue = await response.text();
+  console.log(textvalue);
+  return textvalue;
+}
