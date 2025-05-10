@@ -100,3 +100,5 @@ export function totalCartQuantity(){
 
   return CheckoutCartQuantity || 0 ;
 }
+
+async
