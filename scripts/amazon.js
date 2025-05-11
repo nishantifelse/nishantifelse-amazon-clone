@@ -14,8 +14,17 @@ function renderProductsGrid() {
 
   if (search){ //18P
     filteredProducts = products.filter((product)=>{
-      return product.name.includes(search);
-    }); 
+      let mathingKeyword = false;
+
+      product.keywords.forEach((keyword)=>{
+        if(keyword.toLowerCase().includes(search.toLowerCase())){
+          mathingKeyword = true;
+        }
+      });
+
+      return mathingKeyword || product.name.toLowerCase().includes(search.toLowerCase());
+      
+    });
   }
 
   filteredProducts.forEach((product)=>{
