@@ -47,6 +47,7 @@ export function addToCart(productId){
   }
 
   saveToStorage();
+  totalCartQuantity();
 }
 
 export function removeFromCart(productId){
@@ -61,6 +62,7 @@ export function removeFromCart(productId){
   cart = newCart;
 
   saveToStorage();
+  totalCartQuantity();
 }
 
 export function updateDeliveryOption(productId, deliveryOptionId){

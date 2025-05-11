@@ -1,12 +1,12 @@
-import { getProduct, loadProductsFetch } from "./products.js";
-import { orders } from "./orders.js";
+import { getProduct, loadProductsFetch } from "../data/products.js";
+import { orders } from "../data/orders.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { formateCurrency } from "../scripts/utils/money.js";
-import { addToCart } from "./cart.js";
+import { addToCart, totalCartQuantity } from "../data/cart.js";
+import { formateCurrency } from "./utils/money.js";
 
 async function loadPage(){
   await loadProductsFetch();
-
+  
   let ordersHtml = '';
   orders.forEach((order) => {
     const orderTimeString = dayjs(order.orderTime).format('MMMM D');
@@ -22,7 +22,7 @@ async function loadPage(){
         </div>
         <div class="order-total">
           <div class="order-header-label">Total:</div>
-          <div>${formateCurrency(order.totalCostCents)}</div>
+          <div>$${formateCurrency(order.totalCostCents)}</div>
         </div>
       </div>
 
@@ -44,7 +44,7 @@ function productsListHTML (order){
   let productsListHTML = '';
 
   order.products.forEach((productDetails)=>{
-    const product = getProduct(productDetails.id);
+    const product = getProduct(productDetails.productId);
 
     productsListHTML += 
     `
@@ -85,24 +85,23 @@ function productsListHTML (order){
   }
 
   document.querySelector('.js-orders-grid').innerHTML = ordersHtml;
-  document.querySelectorAll('js-buy-again-button').forEach((button)=>{
+  document.querySelectorAll('.js-buy-again-button').forEach((button)=>{
     button.addEventListener('click', ()=>{
 
       addToCart(button.dataset.productId);
-      updateCartQuantity();
+      totalCartQuantity();
 
-      button.innerHTML = 'Added';
+      button.innerText = 'Added';
 
       setTimeout(()=>{
         button.innerHTML = `
           <img class="buy-again-icon" src="images/icons/buy-again.png">
           <span class="buy-again-message">Buy it again</span>
         `;
-      },1500)
+      },1200);
     });
   });
     
 }
 
-  
 loadPage();
