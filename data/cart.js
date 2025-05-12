@@ -8,9 +8,9 @@ export function loadFromStorage(){
   if (!cart){
 
     cart = [{
-      productId: '',
-      quantity: '',
-      deliveryOptionId: ''
+      productId,
+      quantity,
+      deliveryOptionId
     }];
   
   }

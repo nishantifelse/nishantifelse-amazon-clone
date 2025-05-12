@@ -101,12 +101,18 @@ function renderProductsGrid() {
 
   document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
     button.addEventListener('click', ()=>{
+      let timeoutId;
+      const messageElement = document.querySelector('.added-to-cart');
+      messageElement.style.opacity = 1;
+
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(()=>{
+        messageElement.style.opacity = 0;
+      }, 1500);
       const productId = button.dataset.productId;
 
       addToCart(productId);
-
-      updateCartQuantity();
-      
+      updateCartQuantity(); 
     });
     
   });
@@ -118,4 +124,6 @@ function renderProductsGrid() {
       window.location.href = `amazon.html?search=${search}`;
       }
     });
+
+  
 }
