@@ -5,6 +5,8 @@ import { formateCurrency } from './utils/money.js';
 loadProducts(renderProductsGrid); // callback to run in the future
 
 function renderProductsGrid() {
+  updateCartQuantity();
+  
   let productsHTML = '';
 
   const url = new URL(window.location.href);
@@ -89,13 +91,12 @@ function renderProductsGrid() {
   function updateCartQuantity(){
 
     let cartQuantity = 0;
-
-    cart.forEach((cartItem)=>{
-      cartQuantity += Number(cartItem.quantity) || 0;
-    });
-    
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-    console.log(cartQuantity);
+      cart.forEach((cartItem)=>{
+        cartQuantity += Number(cartItem.quantity) || 0;
+      });
+      
+      document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+      console.log(cartQuantity === 0 ? 'cart is empty' : cartQuantity);
   }
 
   document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
@@ -111,8 +112,10 @@ function renderProductsGrid() {
   });
 
   document.querySelector('.js-search-button')
-    .addEventListener('click', () => {
+    .addEventListener('keydown', (event) => {
+      if (event.key === 'Enter'){
       const search = document.querySelector('.js-search-bar').value;
       window.location.href = `amazon.html?search=${search}`;
+      }
     });
 }

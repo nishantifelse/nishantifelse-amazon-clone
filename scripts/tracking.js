@@ -2,6 +2,7 @@ import { getOrder } from "../data/orders.js";
 import {getProduct, loadProductsFetch, products } from "../data/products.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { orders } from "../data/orders.js";
+import { formateCurrency } from "./utils/money.js";
 console.log(orders);
 async function loadPage() {
   await loadProductsFetch();
@@ -15,16 +16,22 @@ async function loadPage() {
   const product = getProduct(productId);
 
   let productDetails;
+  let priceCents;
+
   order.products.forEach((details) => {
     if (details.productId === product.id){
       productDetails = details;
+      priceCents = product.priceCents;
     }
   });
+
+
 
   const today = dayjs();
   const orderTime = dayjs(order.orderTime);
   const deliveryTime = dayjs(productDetails.estimatedDeliveyTime);
-  const percentProgress = ((today - orderTime)/(deliveryTime - orderTime))*100;
+  const percentProgress = ((today - orderTime)/(deliveryTime - orderTime));
+  const deliveryMessage = percentProgress < 100 ? 'Arriving on' : 'Delivered on';
 
   
   const trackingHTML = `
@@ -33,6 +40,7 @@ async function loadPage() {
         </a>
 
         <div class="delivery-date">
+        ${deliveryMessage} ,
           ${dayjs(productDetails.estimatedDeliveyTime).format('dddd, MMMM D')}
         </div>
 
@@ -43,6 +51,7 @@ async function loadPage() {
         <div class="product-info">
           Quantity: ${productDetails.quantity}
         </div>
+        <div>Price : &#8377;${formateCurrency(priceCents)* productDetails.quantity}</div>
 
         <img class="product-image" src="${product.image}">
 

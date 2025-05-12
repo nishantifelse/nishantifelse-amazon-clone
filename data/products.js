@@ -13,7 +13,7 @@ export function getProduct(productId){
   return matchingProduct;
 }
 
-class Product {
+export class Product {
   id;
   image;
   name;
@@ -36,7 +36,7 @@ class Product {
   }
 
   getPrice(){
-    return `$${formateCurrency(this.priceCents)}`
+    return `&#8377;${formateCurrency(this.priceCents)}`
   }
 
   extraInfoHTML (){
@@ -44,7 +44,7 @@ class Product {
   }
 }
 
-class Clothing extends Product {   // Using Inheritence 
+export class Clothing extends Product {   // Using Inheritence 
   sizeChartLink;
 
   constructor(productDetails){
@@ -58,7 +58,7 @@ class Clothing extends Product {   // Using Inheritence
   }
 }
 
-class Electronics extends Product { //using inheritance
+export class Electronics extends Product { //using inheritance
   instructionsLink;
   warrantyLink;
 

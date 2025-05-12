@@ -22,7 +22,7 @@ async function loadPage(){
         </div>
         <div class="order-total">
           <div class="order-header-label">Total:</div>
-          <div>$${formateCurrency(order.totalCostCents)}</div>
+          <div>&#8377;${formateCurrency(order.totalCostCents)}</div>
         </div>
       </div>
 

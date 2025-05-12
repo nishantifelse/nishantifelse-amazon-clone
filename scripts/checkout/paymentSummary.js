@@ -1,4 +1,4 @@
-import { cart, totalCartQuantity } from "../../data/cart.js";
+import { cart, totalCartQuantity, resetCart } from "../../data/cart.js";
 import { formateCurrency } from "../utils/money.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOption.js";
@@ -33,27 +33,27 @@ export function renderPaymentSummary(){
 
           <div class="payment-summary-row">
             <div>Items (${totalItems}):</div>
-            <div class="payment-summary-money">$${formateCurrency(productPriceCents)}</div>
+            <div class="payment-summary-money">&#8377;${formateCurrency(productPriceCents)}</div>
           </div>
 
           <div class="payment-summary-row">
             <div>Shipping &amp; handling:</div>
-            <div class="payment-summary-money">$${formateCurrency(shippingPriceCents)}</div>
+            <div class="payment-summary-money">&#8377;${formateCurrency(shippingPriceCents)}</div>
           </div>
 
           <div class="payment-summary-row subtotal-row">
             <div>Total before tax:</div>
-            <div class="payment-summary-money">$${formateCurrency(totalBeforeTaxCents)}</div>
+            <div class="payment-summary-money">&#8377;${formateCurrency(totalBeforeTaxCents)}</div>
           </div>
 
           <div class="payment-summary-row">
             <div>Estimated tax (10%):</div>
-            <div class="payment-summary-money">$${formateCurrency(taxCents)}</div>
+            <div class="payment-summary-money">&#8377;${formateCurrency(taxCents)}</div>
           </div>
 
           <div class="payment-summary-row total-row">
             <div>Order total:</div>
-            <div class="payment-summary-money">$${formateCurrency(totalCents)}</div>
+            <div class="payment-summary-money">&#8377;${formateCurrency(totalCents)}</div>
           </div>
 
           <button class="place-order-button button-primary js-place-order">
@@ -66,24 +66,32 @@ export function renderPaymentSummary(){
 
   document.querySelector('.js-place-order')
     .addEventListener('click', async ()=>{
-      try {
-        const response = await fetch('https://supersimplebackend.dev/orders', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            cart: cart
-          })
-        });
-  
-        const order = await response.json();
-        addOrder(order);
+      if(totalCents != 0){
+        try {
+          const response = await fetch('https://supersimplebackend.dev/orders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              cart: cart
+            })
+          });
+    
+          const order = await response.json();
+          addOrder(order);
 
-      } catch (error){
-        console.log('unexpected error, try again later..');
+        } catch (error){
+          console.log('unexpected error, try again later..');
+        }
+
+      resetCart();
+      window.location.href = 'orders.html';
+
+      } else {
+        alert('Not enough item in cart');
+        window.location.reload();
       }
       
-      window.location.href = 'orders.html';
     });
 }
