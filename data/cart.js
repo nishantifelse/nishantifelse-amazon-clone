@@ -1,3 +1,5 @@
+import { validDeliveryOption } from "./deliveryOption.js";
+
 export let cart; //prosudural programing: a set of step-step instruction
 
 loadFromStorage();
@@ -71,6 +73,13 @@ export function updateDeliveryOption(productId, deliveryOptionId){
     }
 
   });
+
+  if(!matchingItem){
+  return ;
+  }
+  else if(!validDeliveryOption(deliveryOptionId)){
+  return ;
+  }
 
   matchingItem.deliveryOptionId = deliveryOptionId;
   saveToStorage();

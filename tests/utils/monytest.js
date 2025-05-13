@@ -10,4 +10,10 @@ describe('test suit: formateCurrency', ()=>{
   it('rounds upto nearest cents', ()=>{
     expect(formateCurrency(2000.5)).toEqual('1698.45');
   });
+    it('rounds down to nearest cents',()=>{
+    expect(formateCurrency(2000.4)).toEqual('1697.60');
+  });
+    it('work with negative numbers',()=>{
+    expect(formateCurrency(-500)).toEqual('-424.40');
+  });
 });
