@@ -140,7 +140,12 @@ document.querySelectorAll('.js-delete-link')
         const container = document.querySelector(
         `.js-cart-item-container-${productId}`
         );
-        updateQuantity(productId, inputValue);
+        if(inputValue > 0 && inputValue < 100){
+          updateQuantity(productId, inputValue);
+          
+        }else{
+          alert("Can't Update more then 100 or less then 0");
+        }        
       container.classList.remove('is-editing-quantity');
         renderOrderSummary();
         renderPaymentSummary();
