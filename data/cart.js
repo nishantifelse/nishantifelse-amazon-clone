@@ -116,6 +116,19 @@ export async function loadCartFetch(fun) {
   return textvalue;
 }
 
+export function updateQuantity(productId, newQuantity){
+  let matchingItem;
+
+  cart.forEach((cartItem)=>{
+    if(productId === cartItem.productId){
+      matchingItem = cartItem;
+    }
+  });
+
+  matchingItem.quantity = newQuantity;
+  saveToStorage();
+}
+
 export function resetCart() {
   cart = [];
   saveToStorage();
