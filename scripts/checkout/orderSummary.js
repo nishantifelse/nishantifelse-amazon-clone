@@ -2,7 +2,7 @@ import { cart, removeFromCart, updateDeliveryOption, totalCartQuantity } from ".
 import { getProduct, products } from "../../data/products.js";
 import { formateCurrency } from "../utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
-import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOption.js";
+import { deliveryOptions, getDeliveryOption, calculateDeliveryDate } from "../../data/deliveryOption.js";
 import { renderCheckoutHeader } from "./checkoutHeader.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
 
@@ -20,9 +20,7 @@ export function renderOrderSummary(){
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-    const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-    const dateString = deliveryDate.format('dddd, MMMM D');
+    const dateString = calculateDeliveryDate(deliveryOption);
 
     cartSummaryHtml +=
           `
@@ -70,9 +68,7 @@ export function renderOrderSummary(){
 function deliveryOptionsHTML (matchingProduct, cartItem){
   let html = '';
   deliveryOptions.forEach((deliveryOption)=>{
-    const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-    const dateString = deliveryDate.format('dddd, MMMM D');
+    const dateString = calculateDeliveryDate(deliveryOption);
     const priceString = deliveryOption.priceCents === 0 ? 'FREE': `&#8377;${formateCurrency(deliveryOption.priceCents)} -` ;
 
     const ischecked = deliveryOption.id === cartItem.deliveryOptionId;
@@ -108,6 +104,7 @@ document.querySelectorAll('.js-delete-link')
       const productId = link.dataset.productId;
       removeFromCart(productId);
       
+      renderCheckoutHeader();
        renderOrderSummary();
       renderPaymentSummary();
     });
