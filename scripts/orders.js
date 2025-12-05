@@ -4,14 +4,14 @@ import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { addToCart, totalCartQuantity } from "../data/cart.js";
 import { formateCurrency } from "./utils/money.js";
 
-async function loadPage(){
+async function loadPage() {
   await loadProductsFetch();
-  
+
   let ordersHtml = '';
   orders.forEach((order) => {
     const orderTimeString = dayjs(order.orderTime).format('MMMM D');
 
-  ordersHtml += `       
+    ordersHtml += `       
   <div class="order-container">
           
     <div class="order-header">
@@ -38,16 +38,16 @@ async function loadPage(){
 
   </div>
       `;
-    });
+  });
 
-function productsListHTML (order){
-  let productsListHTML = '';
+  function productsListHTML(order) {
+    let productsListHTML = '';
 
-  order.products.forEach((productDetails)=>{
-    const product = getProduct(productDetails.productId);
+    order.products.forEach((productDetails) => {
+      const product = getProduct(productDetails.productId);
 
-    productsListHTML += 
-    `
+      productsListHTML +=
+        `
     <div class="product-image-container">
       <img src="${product.image}">
      </div>
@@ -57,9 +57,8 @@ function productsListHTML (order){
           ${product.name}
         </div>
         <div class="product-delivery-date">
-          Arriving on: ${
-            dayjs(productDetails.estimatedDeliveryTime).format('MMMM D')
-          }
+          Arriving on: ${dayjs(productDetails.estimatedDeliveryTime).format('MMMM D')
+        }
         </div>
         <div class="product-quantity">
           Quantity: ${productDetails.quantity}
@@ -79,29 +78,29 @@ function productsListHTML (order){
       </div>
     
     `
-  });
+    });
 
-  return productsListHTML;
+    return productsListHTML;
   }
 
   document.querySelector('.js-orders-grid').innerHTML = ordersHtml;
-  document.querySelectorAll('.js-buy-again-button').forEach((button)=>{
-    button.addEventListener('click', ()=>{
+  document.querySelectorAll('.js-buy-again-button').forEach((button) => {
+    button.addEventListener('click', () => {
 
       addToCart(button.dataset.productId);
       totalCartQuantity();
 
       button.innerText = 'Added';
 
-      setTimeout(()=>{
+      setTimeout(() => {
         button.innerHTML = `
           <img class="buy-again-icon" src="images/icons/buy-again.png">
           <span class="buy-again-message">Buy it again</span>
         `;
-      },1200);
+      }, 1200);
     });
   });
-    
+
 }
 
 loadPage();

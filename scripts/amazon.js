@@ -6,7 +6,7 @@ loadProducts(renderProductsGrid); // callback to run in the future
 
 function renderProductsGrid() {
   updateCartQuantity();
-  
+
   let productsHTML = '';
 
   const url = new URL(window.location.href);
@@ -14,22 +14,22 @@ function renderProductsGrid() {
 
   let filteredProducts = products;
 
-  if (search){ //18P
-    filteredProducts = products.filter((product)=>{
+  if (search) { //18P
+    filteredProducts = products.filter((product) => {
       let mathingKeyword = false;
 
-      product.keywords.forEach((keyword)=>{
-        if(keyword.toLowerCase().includes(search.toLowerCase())){
+      product.keywords.forEach((keyword) => {
+        if (keyword.toLowerCase().includes(search.toLowerCase())) {
           mathingKeyword = true;
         }
       });
 
       return mathingKeyword || product.name.toLowerCase().includes(search.toLowerCase());
-      
+
     });
   }
 
-  filteredProducts.forEach((product)=>{
+  filteredProducts.forEach((product) => {
 
     productsHTML += `
           <div class="product-container">
@@ -84,31 +84,31 @@ function renderProductsGrid() {
           </div>
           `;
 
-    
+
   });
 
   document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-  function updateCartQuantity(){
+  function updateCartQuantity() {
 
     let cartQuantity = 0;
-      cart.forEach((cartItem)=>{
-        cartQuantity += Number(cartItem.quantity) || 0;
-      });
-      
-      document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-      console.log(cartQuantity === 0 ? 'cart is empty' : cartQuantity);
+    cart.forEach((cartItem) => {
+      cartQuantity += Number(cartItem.quantity) || 0;
+    });
+
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+    console.log(cartQuantity === 0 ? 'cart is empty' : cartQuantity);
   }
 
 
-  document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
-    button.addEventListener('click',()=>{
+  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+    button.addEventListener('click', () => {
       let timeoutId;
       const messageElement = document.querySelector('.added-to-cart');
       messageElement.style.opacity = 1;
 
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(()=>{
+      timeoutId = setTimeout(() => {
         messageElement.style.opacity = 0;
       }, 1500);
       const productId = button.dataset.productId;
@@ -117,18 +117,18 @@ function renderProductsGrid() {
       const selectedQuantityValue = Number(selectedQuantity.value);
       addToCart(productId, selectedQuantityValue);
 
-      updateCartQuantity(); 
+      updateCartQuantity();
     });
-    
+
   });
 
   document.querySelector('.js-search-button')
     .addEventListener('keydown', (event) => {
-      if (event.key === 'Enter'){
-      const search = document.querySelector('.js-search-bar').value;
-      window.location.href = `amazon.html?search=${search}`;
+      if (event.key === 'Enter') {
+        const search = document.querySelector('.js-search-bar').value;
+        window.location.href = `amazon.html?search=${search}`;
       }
     });
 
-  
+
 }
